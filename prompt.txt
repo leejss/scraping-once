@@ -1,0 +1,24 @@
+# Goal
+Build a web crawler that can extract content from a given URL.
+
+## Instructions
+
+1. Use the `@wrtnlabs/web-content-extractor` package to extract content from the given URL.
+2. Refer to the [docs](./docs/web-crawler-extractor.md) for more details.
+3. Use `shadcn/ui` for UI components.
+4. Refers to `/Users/tinyyard/mcp-file-server/shadcn-components` for shadcn components usage.
+5. Implement `ScrapResult` component for showing the extracted content.
+6. Implement `ScrapURLForm` component for entering the URL to extract content from.
+7. Implement `page.tsx` for the main page.
+
+## Instructions
+
+- in `ScrapURLForm`, use `input` component from `@/components/ui/input`
+- refers to `/Users/tinyyard/mcp-file-server/shadcn-components` for shadcn components usage
+
+## Instructions
+
+- Create and add zod schema to `src/app/api/scrape/route.ts`
+- Add validation to `src/app/api/scrape/route.ts`
+- Convert `NextResponse` to `Response`
+- Add validation to the component `ScrapURLForm`
