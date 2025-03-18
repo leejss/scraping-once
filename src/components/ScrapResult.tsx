@@ -28,47 +28,6 @@ export default function ScrapResult({ result }: ScrapResultProps) {
           <p>{result.content}</p>
         </div>
       </div>
-
-      {result.contentHtmls.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold">Content HTML Fragments</h3>
-          <div className="space-y-2">
-            {result.contentHtmls.map((html) => (
-              <div 
-                key={`html-${html.substring(0, 20)}`}
-                className="p-4 border rounded-md bg-muted/50"
-              >
-                <pre className="whitespace-pre-wrap text-sm overflow-auto">
-                  {html}
-                </pre>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {result.links.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold">Links</h3>
-          <div className="space-y-2">
-            {result.links.map((link) => (
-              <div 
-                key={link.url}
-                className="p-4 border rounded-md"
-              >
-                <a 
-                  href={link.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  {link.content || link.url}
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
