@@ -4,10 +4,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
+import { useScrapHistory } from "@/context/ScrapHistoryContext";
 
 // Zod schema for URL validation
 const urlSchema = z.object({
-  url: z.string().url("Please enter a valid URL")
+  url: z.string().url("Please enter a valid URL"),
 });
 
 interface ScrapURLFormProps {
@@ -29,6 +30,7 @@ export default function ScrapURLForm({
 }: ScrapURLFormProps) {
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const { addToHistory } = useScrapHistory();
 
   const validateUrl = (value: string): boolean => {
     try {
@@ -75,6 +77,14 @@ export default function ScrapURLForm({
       }
 
       const data = await response.json();
+
+      // Add to history
+      addToHistory({
+        url,
+        title: data.title || "Untitled Page",
+        description: data.description || "",
+      });
+
       onScrapResultAction(data);
     } catch (error) {
       console.error("Error scraping URL:", error);
@@ -99,9 +109,7 @@ export default function ScrapURLForm({
             required
             aria-invalid={!!error}
           />
-          {error && (
-            <p className="text-sm text-red-500 mt-1">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
         </div>
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Scraping..." : "Scrape"}
