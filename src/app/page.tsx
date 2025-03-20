@@ -1,24 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ScrapURLForm from "@/components/ScrapURLForm";
 import ScrapResult from "@/components/ScrapResult";
 import { ThemeToggle } from "@/components/ThemeToggle";
-
-type ScrapResultType = {
-  title: string;
-  description: string;
-  content: string;
-  contentHtmls: string[];
-  links: { url: string; content: string }[];
-} | null;
+import { ScrapeResponse } from "./api/scrape/route";
+import { useScrapResultLoader } from "@/hooks/useScrapResultLoader";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [scrapResult, setScrapResult] = useState<ScrapResultType>(null);
+  const [scrapResult, setScrapResult] = useState<ScrapeResponse | null>(null);
+  const { selectedHistoryItem } = useScrapResultLoader();
 
-  const handleScrapResult = (result: ScrapResultType) => {
-    if (!result) return;
+  // Set the scrap result from the history item when it changes
+  useEffect(() => {
+    if (selectedHistoryItem) {
+      setScrapResult(selectedHistoryItem);
+    }
+  }, [selectedHistoryItem]);
+
+  const handleScrapResult = (result: ScrapeResponse) => {
     setScrapResult(result);
   };
 

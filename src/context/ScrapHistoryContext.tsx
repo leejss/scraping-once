@@ -1,18 +1,11 @@
 "use client";
 
+import { ScrapeResponse } from "@/app/api/scrape/route";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-export type ScrapHistoryItem = {
-  id: string;
-  url: string;
-  title: string;
-  description: string;
-  scrapedAt: string;
-};
-
 type ScrapHistoryContextType = {
-  history: ScrapHistoryItem[];
-  addToHistory: (item: Omit<ScrapHistoryItem, "id" | "scrapedAt">) => void;
+  history: ScrapeResponse[];
+  addToHistory: (item: ScrapeResponse) => void;
   removeFromHistory: (id: string) => void;
   clearHistory: () => void;
 };
@@ -36,7 +29,7 @@ export function ScrapHistoryProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [history, setHistory] = useState<ScrapHistoryItem[]>([]);
+  const [history, setHistory] = useState<ScrapeResponse[]>([]);
 
   // Load history from localStorage on mount
   useEffect(() => {
@@ -55,14 +48,8 @@ export function ScrapHistoryProvider({
     localStorage.setItem("scrapHistory", JSON.stringify(history));
   }, [history]);
 
-  const addToHistory = (item: Omit<ScrapHistoryItem, "id" | "scrapedAt">) => {
-    const newItem: ScrapHistoryItem = {
-      ...item,
-      id: crypto.randomUUID(),
-      scrapedAt: new Date().toISOString(),
-    };
-
-    setHistory((prev) => [newItem, ...prev]);
+  const addToHistory = (item: ScrapeResponse) => {
+    setHistory((prev) => [item, ...prev]);
   };
 
   const removeFromHistory = (id: string) => {

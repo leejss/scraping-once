@@ -3,10 +3,8 @@
 import React from "react";
 import { History, Trash2, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
-import {
-  useScrapHistory,
-  ScrapHistoryItem,
-} from "@/context/ScrapHistoryContext";
+import { useScrapHistory } from "@/context/ScrapHistoryContext";
+import { ScrapeResponse } from "@/app/api/scrape/route";
 import {
   Sidebar,
   SidebarContent,
@@ -22,15 +20,19 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useScrapResultLoader } from "@/hooks/useScrapResultLoader";
 
 export default function ScrapHistorySidebar() {
   const { history, removeFromHistory, clearHistory } = useScrapHistory();
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
 
-  const formatHistoryDate = (dateString: string) => {
+  const formatHistoryDate = (dateValue: string | number) => {
     try {
-      const date = new Date(dateString);
+      const date =
+        typeof dateValue === "number"
+          ? new Date(dateValue)
+          : new Date(dateValue);
       return format(date, "MMM d, yyyy h:mm a");
     } catch {
       return "Invalid date";
@@ -98,13 +100,22 @@ function HistoryItem({
   onVisit,
   formatDate,
 }: {
-  item: ScrapHistoryItem;
+  item: ScrapeResponse;
   onDelete: (id: string) => void;
   onVisit: (url: string) => void;
-  formatDate: (dateString: string) => string;
+  formatDate: (dateValue: string | number) => string;
 }) {
+  const { setSelectedHistoryItem } = useScrapResultLoader();
+
+  const handleItemClick = () => {
+    setSelectedHistoryItem(item);
+  };
+
   return (
-    <div className="rounded-md border bg-card p-3 shadow-sm">
+    <div
+      className="rounded-md border bg-card p-3 shadow-sm cursor-pointer hover:bg-accent/40 transition-colors"
+      onClick={handleItemClick}
+    >
       <div className="mb-1 flex items-start justify-between">
         <h4 className="line-clamp-1 text-sm font-medium">{item.title}</h4>
         <div className="flex space-x-1">
@@ -114,7 +125,10 @@ function HistoryItem({
                 variant="ghost"
                 size="icon"
                 className="h-6 w-6"
-                onClick={() => onVisit(item.url)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent item click event
+                  onVisit(item.url);
+                }}
               >
                 <ExternalLink className="h-4 w-4" />
                 <span className="sr-only">Visit URL</span>
@@ -128,7 +142,10 @@ function HistoryItem({
                 variant="ghost"
                 size="icon"
                 className="h-6 w-6 text-muted-foreground hover:text-destructive"
-                onClick={() => onDelete(item.id)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent item click event
+                  onDelete(item.id);
+                }}
               >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Delete</span>
@@ -152,6 +169,7 @@ function HistoryItem({
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-primary underline-offset-2 hover:underline"
+          onClick={(e) => e.stopPropagation()} // Prevent item click event
         >
           {new URL(item.url).hostname}
         </a>

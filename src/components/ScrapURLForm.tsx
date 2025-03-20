@@ -5,20 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useScrapHistory } from "@/context/ScrapHistoryContext";
+import { ScrapeResponse, scrapeResponseSchema } from "@/app/api/scrape/route";
 
-// Zod schema for URL validation
 const urlSchema = z.object({
   url: z.string().url("Please enter a valid URL"),
 });
 
 interface ScrapURLFormProps {
-  onScrapResultAction: (result: {
-    title: string;
-    description: string;
-    content: string;
-    contentHtmls: string[];
-    links: { url: string; content: string }[];
-  }) => void;
+  onScrapResultAction: (result: ScrapeResponse) => void;
   isLoading: boolean;
   setIsLoadingAction: (isLoading: boolean) => void;
 }
@@ -55,8 +49,8 @@ export default function ScrapURLForm({
       return;
     }
 
-    // Validate URL before submitting
     if (!validateUrl(url)) {
+      setError("Invalid URL");
       return;
     }
 
@@ -77,15 +71,10 @@ export default function ScrapURLForm({
       }
 
       const data = await response.json();
+      const validatedData = scrapeResponseSchema.parse(data);
 
-      // Add to history
-      addToHistory({
-        url,
-        title: data.title || "Untitled Page",
-        description: data.description || "",
-      });
-
-      onScrapResultAction(data);
+      addToHistory(validatedData);
+      onScrapResultAction(validatedData);
     } catch (error) {
       console.error("Error scraping URL:", error);
       setError(error instanceof Error ? error.message : "Failed to scrape URL");

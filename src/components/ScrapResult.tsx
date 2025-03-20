@@ -1,13 +1,9 @@
 "use client";
 
+import { ScrapeResponse } from "@/app/api/scrape/route";
+
 interface ScrapResultProps {
-  result: {
-    title: string;
-    description: string;
-    content: string;
-    contentHtmls: string[];
-    links: { url: string; content: string }[];
-  } | null;
+  result: ScrapeResponse | null;
 }
 
 export default function ScrapResult({ result }: ScrapResultProps) {
