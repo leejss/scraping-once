@@ -1,6 +1,6 @@
 "use client";
 
-import { ScrapeResponse } from "@/app/api/scrape/route";
+import { ScrapeResponse } from "@/app/api/scrape/shcema";
 
 interface ScrapResultProps {
   result: ScrapeResponse | null;

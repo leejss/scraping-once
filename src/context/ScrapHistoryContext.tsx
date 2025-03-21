@@ -1,6 +1,6 @@
 "use client";
 
-import { ScrapeResponse } from "@/app/api/scrape/route";
+import { ScrapeResponse } from "@/app/api/scrape/shcema";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type ScrapHistoryContextType = {

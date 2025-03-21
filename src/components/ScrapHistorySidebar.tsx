@@ -4,7 +4,6 @@ import React from "react";
 import { History, Trash2, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { useScrapHistory } from "@/context/ScrapHistoryContext";
-import { ScrapeResponse } from "@/app/api/scrape/route";
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +20,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useScrapResultLoader } from "@/hooks/useScrapResultLoader";
+import { ScrapeResponse } from "@/app/api/scrape/shcema";
 
 export default function ScrapHistorySidebar() {
   const { history, removeFromHistory, clearHistory } = useScrapHistory();

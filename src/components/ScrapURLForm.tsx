@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useScrapHistory } from "@/context/ScrapHistoryContext";
-import { ScrapeResponse, scrapeResponseSchema } from "@/app/api/scrape/route";
-
+import { scrapeResponseSchema, ScrapeResponse } from "@/app/api/scrape/shcema";
 const urlSchema = z.object({
   url: z.string().url("Please enter a valid URL"),
 });

@@ -1,7 +1,7 @@
 "use client";
 
+import { ScrapeResponse } from "@/app/api/scrape/shcema";
 import { create } from "zustand";
-import { ScrapeResponse } from "@/app/api/scrape/route";
 
 interface ScrapResultLoaderState {
   selectedHistoryItem: ScrapeResponse | null;

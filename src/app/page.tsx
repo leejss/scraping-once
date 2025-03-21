@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import ScrapURLForm from "@/components/ScrapURLForm";
 import ScrapResult from "@/components/ScrapResult";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ScrapeResponse } from "./api/scrape/route";
 import { useScrapResultLoader } from "@/hooks/useScrapResultLoader";
+import { ScrapeResponse } from "./api/scrape/shcema";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
